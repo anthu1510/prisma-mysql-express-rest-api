@@ -3,14 +3,15 @@ const hashPassword = require("password-hash");
 const {
   generateAccessToken,
   generateRefreshToken,
-  verifyAccessToken,
+  verifyToken,
+  newTokens,
 } = require("../helpers/jwt");
 
 const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-router.get("/", verifyAccessToken, async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
   try {
     const user = await prisma.user.findMany({
       select: {
@@ -89,12 +90,42 @@ router.post("/login", async (req, res) => {
       },
     };
 
+    const token = generateAccessToken(payload);
+    const refreshToken = generateRefreshToken(payload);
+
     const result = {
       status: "success",
-      token: generateAccessToken(payload),
-      refreshToken: generateRefreshToken(payload),
+      token,
+      refreshToken,
     };
 
+    req.session.refreshToken = [refreshToken];
+
+    res.json(result);
+  } catch (err) {
+    res.send(err);
+  }
+});
+
+router.post("/refresh", async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+    //return res.send(req.session.refreshToken[0]);
+    if (!req.session.refreshToken.includes(refreshToken))
+      return res.sendStatus(403);
+    const verified = newTokens(token);
+    res.send(verified);
+  } catch (err) {
+    res.send(err);
+  }
+});
+
+router.post("/logout", async (req, res) => {
+  try {
+    req.session.destroy();
+    const result = {
+      status: "success",
+    };
     res.json(result);
   } catch (err) {
     res.send(err);
