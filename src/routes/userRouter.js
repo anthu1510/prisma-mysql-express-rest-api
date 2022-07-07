@@ -1,12 +1,16 @@
 const router = require("express").Router();
 const hashPassword = require("password-hash");
-const { generateAccessToken, generateRefreshToken } = require("../helpers/jwt");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyAccessToken,
+} = require("../helpers/jwt");
 
 const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-router.get("/", async (req, res) => {
+router.get("/", verifyAccessToken, async (req, res) => {
   try {
     const user = await prisma.user.findMany({
       select: {
@@ -79,8 +83,10 @@ router.post("/login", async (req, res) => {
     if (!isVerified) return res.sendStatus(403);
 
     const payload = {
-      id: user.id,
-      roleId: user.role.id,
+      user: {
+        id: user.id,
+        roleId: user.role.id,
+      },
     };
 
     const result = {
