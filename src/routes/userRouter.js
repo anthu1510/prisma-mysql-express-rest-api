@@ -166,7 +166,7 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", (req, res) => {
-  res.send("put user");
+  res.send("put user test for api");
 });
 
 router.delete("/", (req, res) => {
