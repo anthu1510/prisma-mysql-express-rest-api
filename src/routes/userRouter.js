@@ -1,6 +1,5 @@
 const router = require("express").Router();
-const { verifyToken, newTokens } = require("../helpers/jwt");
-
+const { verifyToken } = require("../helpers/jwt");
 const {
   getUsersAll,
   loginUser,
