@@ -10,9 +10,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Roles {
+   id Int @id @default(autoincrement())
+   name String @unique @db.VarChar(255)
+   status Int @default(1) 
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+   user Users[]
+   permissions Permissions?
+}
+
+model Permissions {
   id Int @id @default(autoincrement())
-  role Role @relation(fields: [roleId], references: [id])
+  role Roles @relation(fields: [roleId], references: [id])
+  roleId Int @unique
+  access Json
+}
+
+
+model Users {
+  id Int @id @default(autoincrement())
+  role Roles @relation(fields: [roleId], references: [id])
   roleId Int 
   name String  @db.VarChar(255)
   email String @unique @db.VarChar(512)
@@ -20,15 +38,6 @@ model User {
   status Int @default(1)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
 }
 
-model Role {
-   id Int @id @default(autoincrement())
-   name String @unique @db.VarChar(255)
-   status Int @default(1) 
-   createdAt DateTime @default(now())
-   updatedAt DateTime @updatedAt
-   user User[]
-}
 
