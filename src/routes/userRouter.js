@@ -13,7 +13,7 @@ const prisma = new PrismaClient();
 
 router.get("/", verifyToken, async (req, res) => {
   try {
-    const user = await prisma.user.findMany({
+    const user = await prisma.users.findMany({
       select: {
         id: true,
         name: true,
@@ -36,7 +36,7 @@ router.get("/", verifyToken, async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: {
         id: parseInt(id),
       },
@@ -61,7 +61,7 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: {
         email,
       },
@@ -134,8 +134,8 @@ router.post("/logout", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    // const user = await prisma.role.create({
+    const { name, email, password, roleId } = req.body;
+    // const user = await prisma.roles.create({
     //   data: {
     //     connect: {
     //       id: 1,
@@ -149,8 +149,7 @@ router.post("/", async (req, res) => {
     //     },
     //   },
     // });
-    const roleId = 2;
-    const user = await prisma.user.create({
+    const user = await prisma.users.create({
       data: {
         roleId,
         name,
