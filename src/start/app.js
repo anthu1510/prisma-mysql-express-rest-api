@@ -29,7 +29,7 @@ app.use(
 );
 
 //routing config
-require("./routes")(app);
+require("../routes")(app);
 
 // Error handling
 app.use((req, res, next) => {
