@@ -1,4 +1,5 @@
 const express = require("express");
+require("express-group-routes");
 const morgan = require("morgan");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
@@ -29,7 +30,11 @@ app.use(
 );
 
 //routing config
-require("../routes")(app);
+//require("../routes")(app);
+
+app.group("/api", (router) => {
+  require("../routes").map((route) => router.use(route.url, route.routerFile));
+});
 
 // Error handling
 app.use((req, res, next) => {

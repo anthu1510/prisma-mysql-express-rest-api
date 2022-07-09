@@ -1,3 +1,10 @@
-module.exports = (app) => {
-  app.use("/api/users", require("./userRouter"));
-};
+module.exports = [
+  {
+    url: "/roles",
+    routerFile: require("./roleRouter"),
+  },
+  {
+    url: "/users",
+    routerFile: require("./userRouter"),
+  },
+];
