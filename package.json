@@ -2,10 +2,11 @@
   "name": "prisma-mysql-express-rest",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "dev": "nodemon",
-    "migrate": "npx prisma migrate dev --name init",
+    "migrate": "npx prisma migrate dev --name init & pnpm seed",
+    "seed": "node prisma/seed.js",
     "studio": "npx prisma studio"
   },
   "keywords": [],
