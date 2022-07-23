@@ -1,6 +1,8 @@
 const express = require("express");
-require("express-group-routes");
 const morgan = require("morgan");
+const cors = require("cors");
+require("express-group-routes");
+
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
 
@@ -17,6 +19,7 @@ const options = {
 const sessionStore = new MySQLStore(options);
 
 // applying middleware
+app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
