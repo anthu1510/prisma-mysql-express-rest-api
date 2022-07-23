@@ -9,10 +9,17 @@ const roleData = [
   {
     name: "Customer",
   },
+  {
+    name: "Supplier",
+  },
+  {
+    name: "Root",
+  },
 ];
 
 async function main() {
   console.log(`Start seeding ...`);
+  await prisma.roles.deleteMany({ where: {} });
   for (const role of roleData) {
     const roles = await prisma.roles.create({
       data: role,
