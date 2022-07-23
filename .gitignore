@@ -1,6 +1,6 @@
-node_modules
+server/node_modules
 # Keep environment variables out of version control
-pnpm-lock.yaml
-prisma/migrations/
+server/pnpm-lock.yaml
+server/prisma/migrations/
 .vscode
 
